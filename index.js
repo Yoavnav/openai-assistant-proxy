@@ -1,48 +1,40 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2706
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+const express = require('express');
+const bodyParser = require('body-parser');
+const fetch = require('node-fetch');
 
-\f0\fs24 \cf0 const express = require('express');\
-const bodyParser = require('body-parser');\
-const fetch = require('node-fetch');\
-\
-const app = express();\
-app.use(bodyParser.json());\
-\
-const OPENAI_API_KEY = "your-openai-api-key-here"; // Replace with your OpenAI API key\
-const ASSISTANT_ID = "your-assistant-id-here"; // Replace with your Assistant ID\
-\
-app.post('/chat', async (req, res) => \{\
-  const messageText = req.body.messageText;\
-\
-  try \{\
-    // Create thread\
-    const threadRes = await fetch("https://api.openai.com/v1/threads", \{\
-      method: "POST",\
-      headers: \{\
-        Authorization: `Bearer $\{OPENAI_API_KEY\}`,\
-        "Content-Type": "application/json"\
-      \},\
-      body: JSON.stringify(\{\})\
-    \});\
-    const thread = await threadRes.json();\
-\
-    // Send message to assistant\
-    const messages = [\{\
-      role: "user",\
-      content: messageText\
-    \}];\
-    \
-    await fetch(`https://api.openai.com/v1/threads/$\{thread.id\}/messages`, \{\
-      method: "POST",\
-      headers: \{\
-        Authorization: `Bearer $\{OPENAI_API_KEY\}`,\
-        "Content-Type": "application/json"\
-      \},\
-      body: JSON.stringify(\{\
-        role: "user",\
-        content: messages\
-}
+const app = express();
+app.use(bodyParser.json());
+
+const OPENAI_API_KEY = "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"; // Replace with your OpenAI API key
+const ASSISTANT_ID = "asst-4go7VUsic0ZdbdV6zXhAFk8w"; // Replace with your Assistant ID
+
+app.post('/chat', async (req, res) => {
+  const messageText = req.body.messageText;
+
+  try {
+    // Create thread
+    const threadRes = await fetch("https://api.openai.com/v1/threads", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({})
+    });
+    const thread = await threadRes.json();
+
+    // Send message to assistant
+    const messages = [{
+      role: "user",
+      content: messageText
+    }];
+    
+    await fetch(`https://api.openai.com/v1/threads/${thread.id}/messages`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        role: "user",
+        content: messages
